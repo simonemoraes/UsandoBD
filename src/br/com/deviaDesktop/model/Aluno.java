@@ -1,13 +1,15 @@
 
 package br.com.deviaDesktop.model;
-// Ateração feita pelo Rui
+// Ateração feita pelo Rui e revisada pela simone
 public class Aluno {
-
+    
+    //declaração de variaveis
     private int idAluno;
     private String nome;
     private String sobreNome;
     private int cidade;
-
+    
+    // metodos acessores
     public int getIdAluno() {
         return idAluno;
     }
