@@ -3,8 +3,6 @@ package br.com.deviaDesktop.services;
 import br.com.deviaDesketop.dao.AlunoDao;
 import br.com.deviaDesktop.model.Aluno;
 import br.com.deviaDesktop.model.Cidade;
-import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
