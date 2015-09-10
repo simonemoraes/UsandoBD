@@ -6,11 +6,11 @@ import javax.swing.JOptionPane;
 
 public class CadastroAlunos extends javax.swing.JFrame {
     
-    private Conexao con;
+    private Conexao conec;
 
     public CadastroAlunos() {
         initComponents();
-        con = new Conexao();
+        conec = new Conexao();
     }
 
     @SuppressWarnings("unchecked")
@@ -76,8 +76,8 @@ public class CadastroAlunos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem_SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_SairActionPerformed
-         if(con != null){
-             con.closeAll();
+         if(conec != null){
+             conec.closeAll();
         }else{
             JOptionPane.showMessageDialog(null, "Problemas com a conexão com o BD!");
         }
@@ -85,8 +85,8 @@ public class CadastroAlunos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem_SairActionPerformed
 
     private void jMenuItem_AlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AlunoActionPerformed
-        if(con != null){
-             new CadAluno( this, true, con ).setVisible( true );
+        if(conec != null){
+             new CadAluno( this, true, conec).setVisible( true );
         }else{
             JOptionPane.showMessageDialog(null, "Problemas com a conexão com o BD!");
         }

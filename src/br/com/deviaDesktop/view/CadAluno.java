@@ -7,26 +7,25 @@ import javax.swing.JOptionPane;
 
 public class CadAluno extends javax.swing.JDialog {
 
-    
     Aluno aluno;
     Servicos servicos;
     Conexao conect;
 
-    public CadAluno(java.awt.Frame parent, boolean modal, Conexao con) {
+    public CadAluno(java.awt.Frame parent, boolean modal, Conexao cnt) {
         super(parent, modal);
         initComponents();
-        iniciarBD();
-        this.conect = con;
+        //iniciarBD();
+        this.conect = cnt;
         aluno = new Aluno();
         servicos = new Servicos();
 
-       // servicos.selecionaTodosAlunos(conect);
-        aluno = servicos.primeiroRegistroRetornado();
+        // servicos.selecionaTodosAlunos(conect);
+        // aluno = servicos.primeiroRegistroRetornado();
 
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        // jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
+        // jt_Nome.setText(aluno.getNome());
+        // jt_Sobrenome.setText(aluno.getSobreNome());
+        //  jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
     }
 
     @SuppressWarnings("unchecked")
@@ -218,7 +217,7 @@ public class CadAluno extends javax.swing.JDialog {
 
         Aluno alunoRetornado = new Aluno();
 
-        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()),conect);
+        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()), conect);
 
         if (alunoRetornado != null) {
 
@@ -290,27 +289,27 @@ public class CadAluno extends javax.swing.JDialog {
         jt_Nome.setEditable(false);
         jt_Sobrenome.setEditable(false);
         jt_CodCidoade.setEditable(false);
-                
+
         new PesquisarRegistro(null, rootPaneCheckingEnabled).setVisible(true);
-        
-       // JOptionPane.showMessageDialog( null, "Entre com o Id a ser pesquisado." );
+
+        // JOptionPane.showMessageDialog( null, "Entre com o Id a ser pesquisado." );
 
         /*
-        Aluno alunoRetornado = new Aluno();
+         Aluno alunoRetornado = new Aluno();
         
-        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()));
+         alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()));
 
-        if ( alunoRetornado != null) {
+         if ( alunoRetornado != null) {
 
-            jt_Codigo.setText(String.valueOf(alunoRetornado.getIdAluno()));
-            jt_Nome.setText(alunoRetornado.getNome());
-            jt_Sobrenome.setText(alunoRetornado.getSobreNome());
-            jt_CodCidoade.setText(String.valueOf(alunoRetornado.getCidade()));
-        } else {
-            JOptionPane.showMessageDialog( null, "Não houve retorno do banco" );
-        }
-*/
-        
+         jt_Codigo.setText(String.valueOf(alunoRetornado.getIdAluno()));
+         jt_Nome.setText(alunoRetornado.getNome());
+         jt_Sobrenome.setText(alunoRetornado.getSobreNome());
+         jt_CodCidoade.setText(String.valueOf(alunoRetornado.getCidade()));
+         } else {
+         JOptionPane.showMessageDialog( null, "Não houve retorno do banco" );
+         }
+         */
+
 
     }//GEN-LAST:event_jb_PesquizarActionPerformed
 
@@ -374,7 +373,6 @@ public class CadAluno extends javax.swing.JDialog {
     private javax.swing.JTextField jt_Nome;
     private javax.swing.JTextField jt_Sobrenome;
     // End of variables declaration//GEN-END:variables
-    private Conexao con;
 
     private void iniciarBD() {
         new Conexao();
