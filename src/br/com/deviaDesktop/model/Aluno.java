@@ -1,6 +1,6 @@
 
 package br.com.deviaDesktop.model;
-
+// Ateração feita pelo Rui
 public class Aluno {
 
     private int idAluno;
