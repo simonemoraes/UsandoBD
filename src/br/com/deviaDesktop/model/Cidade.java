@@ -1,6 +1,6 @@
 
 package br.com.deviaDesktop.model;
-
+// Classe cidade
 public class Cidade {
 
     private int idCidade;
