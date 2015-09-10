@@ -77,7 +77,8 @@ public class Servicos {
     }
 
     public Aluno retornaAlunoPorId(int alunoId) {
-
+ 
+        // Instanciando alunoDao
         aluno = alunoDao.buscaAlunoPorId(alunoId);
 
         if (aluno != null) {
