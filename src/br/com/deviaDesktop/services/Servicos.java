@@ -91,6 +91,7 @@ public class Servicos {
 
     }
 
+    //Class que faz atualização do registro no banco
     public int atualizaAluno( Aluno aluno ) {
 
         int alunoRetornado = 0;
