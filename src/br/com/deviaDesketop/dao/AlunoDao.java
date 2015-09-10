@@ -14,14 +14,11 @@ import javax.swing.JOptionPane;
 
 public class AlunoDao {
 
-    Conexao con;
+   
     ResultSet rs;
 
-    public AlunoDao() {
-        con = new Conexao();
-    }
 
-    public List<Aluno> listarAlunos() {
+    public List<Aluno> listarAlunos(Conexao con) {
 
         String sql = "select * from aluno";
         PreparedStatement ps = (PreparedStatement) con.getPreparedStatement(sql);
@@ -49,7 +46,7 @@ public class AlunoDao {
         return listaAluno;
     }
 
-    public Aluno buscaAlunoPorId(int idAluno) {
+    public Aluno buscaAlunoPorId(int idAluno, Conexao con) {
 
         PreparedStatement ps;
         String sql = "select * from aluno where id=?";
@@ -81,7 +78,7 @@ public class AlunoDao {
         return null;
     }
 
-    public int atualizarAluno( Aluno aluno ) {
+    public int atualizarAluno( Aluno aluno, Conexao con ) {
 
         PreparedStatement ps;
         String sql = "update aluno set nome = ?, sobreNome = ?, codCidade = ? where id = ?";
@@ -104,7 +101,7 @@ public class AlunoDao {
         return retorno;
     }
 
-    public int inserirAluno( Aluno aluno ) {
+    public int inserirAluno( Aluno aluno, Conexao con ) {
 
         PreparedStatement ps;
         String sql = "insert into aluno(nome, sobreNome, codCidade) values(?,?,?)";
@@ -126,7 +123,7 @@ public class AlunoDao {
         return retorno;
     }
 
-    public int delete( int id_aluno ) {
+    public int delete( int id_aluno, Conexao con ) {
 
         PreparedStatement ps;
         int retorno = 0;
@@ -237,7 +234,7 @@ public class AlunoDao {
     
     
 
-    public String buscaCidadePorId(int cidade) {
+    public String buscaCidadePorId(int cidade, Conexao con) {
 
         PreparedStatement ps;
         String cidadeRetornada = null;

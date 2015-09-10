@@ -1,10 +1,16 @@
 
 package br.com.deviaDesktop.view;
 
+import br.com.deviaDesktop.util.Conexao;
+import javax.swing.JOptionPane;
+
 public class CadastroAlunos extends javax.swing.JFrame {
+    
+    private Conexao con;
 
     public CadastroAlunos() {
         initComponents();
+        con = new Conexao();
     }
 
     @SuppressWarnings("unchecked")
@@ -70,11 +76,21 @@ public class CadastroAlunos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem_SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_SairActionPerformed
+         if(con != null){
+             con.closeAll();
+        }else{
+            JOptionPane.showMessageDialog(null, "Problemas com a conexão com o BD!");
+        }
         System.exit(0);
     }//GEN-LAST:event_jMenuItem_SairActionPerformed
 
     private void jMenuItem_AlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AlunoActionPerformed
-        new CadAluno( this, true ).setVisible( true );
+        if(con != null){
+             new CadAluno( this, true, con ).setVisible( true );
+        }else{
+            JOptionPane.showMessageDialog(null, "Problemas com a conexão com o BD!");
+        }
+       
     }//GEN-LAST:event_jMenuItem_AlunoActionPerformed
 
     private void jMenuItem_CidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_CidadeActionPerformed

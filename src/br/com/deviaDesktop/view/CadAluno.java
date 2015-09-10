@@ -1,6 +1,5 @@
 package br.com.deviaDesktop.view;
 
-import br.com.deviaDesketop.dao.AlunoDao;
 import br.com.deviaDesktop.model.Aluno;
 import br.com.deviaDesktop.services.Servicos;
 import br.com.deviaDesktop.util.Conexao;
@@ -11,16 +10,17 @@ public class CadAluno extends javax.swing.JDialog {
     
     Aluno aluno;
     Servicos servicos;
+    Conexao conect;
 
-    public CadAluno(java.awt.Frame parent, boolean modal) {
+    public CadAluno(java.awt.Frame parent, boolean modal, Conexao con) {
         super(parent, modal);
         initComponents();
         iniciarBD();
-
+        this.conect = con;
         aluno = new Aluno();
         servicos = new Servicos();
 
-        servicos.selecionaTodosAlunos();
+       // servicos.selecionaTodosAlunos(conect);
         aluno = servicos.primeiroRegistroRetornado();
 
         jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
@@ -218,7 +218,7 @@ public class CadAluno extends javax.swing.JDialog {
 
         Aluno alunoRetornado = new Aluno();
 
-        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()));
+        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()),conect);
 
         if (alunoRetornado != null) {
 
@@ -229,7 +229,7 @@ public class CadAluno extends javax.swing.JDialog {
             aluno.setSobreNome(jt_Sobrenome.getText());
             aluno.setCidade(Integer.parseInt(jt_CodCidoade.getText()));
 
-            int retorno = servicos.atualizaAluno(aluno);
+            int retorno = servicos.atualizaAluno(aluno, conect);
 
             if (retorno != 0) {
 
@@ -242,7 +242,7 @@ public class CadAluno extends javax.swing.JDialog {
 
             /* Insere um novo registro */
 
-            int recebeRetorno = servicos.insereAluno(aluno);
+            int recebeRetorno = servicos.insereAluno(aluno, conect);
 
             if (recebeRetorno != 0) {
                 JOptionPane.showMessageDialog(null, " Novo aluno inserido com sucesso!");
@@ -251,7 +251,7 @@ public class CadAluno extends javax.swing.JDialog {
             }
         }
 
-        servicos.selecionaTodosAlunos();
+        servicos.selecionaTodosAlunos(conect);
         aluno = servicos.primeiroRegistroRetornado();
 
         jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
@@ -263,12 +263,12 @@ public class CadAluno extends javax.swing.JDialog {
 
     private void jb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ExcluirActionPerformed
 
-        int retorno = servicos.deletar(Integer.parseInt(jt_Codigo.getText()));
+        int retorno = servicos.deletar(Integer.parseInt(jt_Codigo.getText()), conect);
 
         if (retorno != 0) {
             JOptionPane.showMessageDialog(null, " Deleção concluida com sucesso!");
 
-            servicos.selecionaTodosAlunos();
+            servicos.selecionaTodosAlunos(conect);
             aluno = servicos.primeiroRegistroRetornado();
 
             jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));

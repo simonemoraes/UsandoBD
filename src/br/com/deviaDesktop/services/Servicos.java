@@ -2,85 +2,26 @@ package br.com.deviaDesktop.services;
 
 import br.com.deviaDesketop.dao.AlunoDao;
 import br.com.deviaDesktop.model.Aluno;
-import br.com.deviaDesktop.model.Cidade;
+import br.com.deviaDesktop.util.Conexao;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class Servicos {
 
-    private AlunoDao alunoDao;
-    private Cidade cidade;
-    private Aluno aluno;
-
-    public Servicos() {
-
-        alunoDao = new AlunoDao();
-        cidade = new Cidade();
-        aluno = new Aluno();
-        //opcaoAlteracao();
-        //retornaAlunoPorId(3);
-        //atualizaAluno();
-    }
-
-   
-
-    public void opcaoAlteracao() {
-
-        int selecao = 0;
-
-        do {
-
-            selecao = Integer.parseInt(JOptionPane.showInputDialog("Escolhar a opção desejada:"
-                    + "\n1 - Selecionar todos os alunos"
-                    + "\n2 - Seleciona nome da Cidade"
-                    + "\n3 - Insere novo aluno"
-                    + "\n4 - Deleta Aluno"
-                    + "\n5 - Retorno o primeiro registro"
-                    + "\n6- sair\n\n"));
-
-            switch (selecao) {
-
-                case 1:
-                    selecionaTodosAlunos();
-                    break;
-
-                case 2:
-                    int idCidade = Integer.parseInt(JOptionPane.showInputDialog("Digite um Id a ser pesquizado "));
-                    nomeCidade(idCidade);
-                    break;
-
-                case 3:
-                    //insereAluno();
-                    break;
-
-                case 4:
-                    //deletar();
-                    break;
-
-                case 5:
-                    primeiroRegistroRetornado();
-                    break;
-
-                case 6:
-                    System.exit(0);
-            }
-        } while (selecao != 6);
-    }
-
-    public List<Aluno> selecionaTodosAlunos() {
-
-        List<Aluno> listaAlunosRetornada = alunoDao.listarAlunos();
+    public List<Aluno> selecionaTodosAlunos(Conexao con) {
+        AlunoDao alunoDao = new AlunoDao();
+        List<Aluno> listaAlunosRetornada = alunoDao.listarAlunos(con);
 
         return listaAlunosRetornada;
     }
 
-    public Aluno retornaAlunoPorId(int alunoId) {
- 
+    public Aluno retornaAlunoPorId(int alunoId, Conexao con) {
+
         // Instanciando alunoDao
-        aluno = alunoDao.buscaAlunoPorId(alunoId);
+        AlunoDao alunoDao = new AlunoDao();
+        Aluno aluno = alunoDao.buscaAlunoPorId(alunoId, con);
 
         if (aluno != null) {
-            
+
             return aluno;
         } else {
 
@@ -90,69 +31,66 @@ public class Servicos {
     }
 
     //Class que faz atualização do registro no banco
-    public int atualizaAluno( Aluno aluno ) {
+    public int atualizaAluno(Aluno aluno, Conexao con) {
 
         int alunoRetornado = 0;
-
-        alunoRetornado = alunoDao.atualizarAluno( aluno );
+        AlunoDao alunoDao = new AlunoDao();
+        alunoRetornado = alunoDao.atualizarAluno(aluno, con);
 
         return alunoRetornado;
     }
 
-    public int insereAluno(Aluno aluno) {
-
-        int recebeRetorno = alunoDao.inserirAluno(aluno);
+    public int insereAluno(Aluno aluno, Conexao con) {
+        AlunoDao alunoDao = new AlunoDao();
+        int recebeRetorno = alunoDao.inserirAluno(aluno, con);
 
         return recebeRetorno;
 
     }
 
-    public int deletar(int idAluno) {
-
-        int retorno = alunoDao.delete(idAluno);
+    public int deletar(int idAluno, Conexao con) {
+        AlunoDao alunoDao = new AlunoDao();
+        int retorno = alunoDao.delete(idAluno, con);
 
         return retorno;
 
     }
 
     public Aluno primeiroRegistroRetornado() {
-
+        Aluno aluno = new Aluno();
+        AlunoDao alunoDao = new AlunoDao();
         aluno = alunoDao.retornaPrimeiroRegistro();
 
         return aluno;
     }
 
     public Aluno registroAnteriorRetornado() {
-
+        Aluno aluno = new Aluno();
+        AlunoDao alunoDao = new AlunoDao();
         aluno = alunoDao.retornaRegistroAnterior();
 
         return aluno;
     }
 
     public Aluno proximoRegistroRetornado() {
-
+        Aluno aluno = new Aluno();
+        AlunoDao alunoDao = new AlunoDao();
         aluno = alunoDao.retornaProximoRegistro();
 
         return aluno;
     }
 
     public Aluno ultimoRegistroRetornado() {
-
+        Aluno aluno = new Aluno();
+        AlunoDao alunoDao = new AlunoDao();
         aluno = alunoDao.retornaUltimoRegistro();
 
         return aluno;
     }
-    
-    
-    
-    
-    
-    
-    
 
-    public void nomeCidade(int cidadeId) {
-
-        String cidadeRetornada = alunoDao.buscaCidadePorId(cidadeId);
+    public void nomeCidade(int cidadeId, Conexao con) {
+        AlunoDao alunoDao = new AlunoDao();
+        String cidadeRetornada = alunoDao.buscaCidadePorId(cidadeId, con);
 
         if (cidadeRetornada != null) {
             System.out.println("A cidade pesquisada: " + cidadeRetornada);
