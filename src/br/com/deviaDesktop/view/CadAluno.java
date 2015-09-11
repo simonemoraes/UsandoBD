@@ -1,15 +1,20 @@
 package br.com.deviaDesktop.view;
 
+import br.com.deviaDesketop.dao.AlunoDao;
 import br.com.deviaDesktop.model.Aluno;
 import br.com.deviaDesktop.services.Servicos;
 import br.com.deviaDesktop.util.Conexao;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class CadAluno extends javax.swing.JDialog {
 
     Aluno aluno;
+    AlunoDao alunoDao;
     Servicos servicos;
     Conexao conect;
+    List<Aluno> listaAlunosRetornada = null;
+    int ultimaPosicao = 0;
 
     public CadAluno(java.awt.Frame parent, boolean modal, Conexao cnt) {
         super(parent, modal);
@@ -17,15 +22,13 @@ public class CadAluno extends javax.swing.JDialog {
         //iniciarBD();
         this.conect = cnt;
         aluno = new Aluno();
+        Aluno alunoRetornado = new Aluno();
+        alunoDao = new AlunoDao();
         servicos = new Servicos();
+        preencheListadeAlunos(cnt);
+        preecherPrimeiroAluno();
 
-        // servicos.selecionaTodosAlunos(conect);
-        // aluno = servicos.primeiroRegistroRetornado();
 
-        // jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        // jt_Nome.setText(aluno.getNome());
-        // jt_Sobrenome.setText(aluno.getSobreNome());
-        //  jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
     }
 
     @SuppressWarnings("unchecked")
@@ -206,74 +209,32 @@ public class CadAluno extends javax.swing.JDialog {
         jt_CodCidoade.setText("");
         jt_Nome.requestFocus();
         jt_Codigo.setEditable(false);
+
     }//GEN-LAST:event_jb_NovoActionPerformed
 
     private void jb_SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_SalvarActionPerformed
 
-
-        aluno.setNome(jt_Nome.getText());
-        aluno.setSobreNome(jt_Sobrenome.getText());
-        aluno.setCidade(Integer.parseInt(jt_CodCidoade.getText()));
-
-        Aluno alunoRetornado = new Aluno();
-
-        alunoRetornado = servicos.retornaAlunoPorId(Integer.parseInt(jt_Codigo.getText()), conect);
-
-        if (alunoRetornado != null) {
-
-            /* Faz a atualização do registro */
-
-            aluno.setIdAluno(Integer.parseInt(jt_Codigo.getText()));
-            aluno.setNome(jt_Nome.getText());
-            aluno.setSobreNome(jt_Sobrenome.getText());
-            aluno.setCidade(Integer.parseInt(jt_CodCidoade.getText()));
-
-            int retorno = servicos.atualizaAluno(aluno, conect);
-
-            if (retorno != 0) {
-
-                JOptionPane.showMessageDialog(null, "Atualização feita com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Não houve atualização!!");
-            }
-
-        } else {
-
-            /* Insere um novo registro */
-
-            int recebeRetorno = servicos.insereAluno(aluno, conect);
-
-            if (recebeRetorno != 0) {
-                JOptionPane.showMessageDialog(null, " Novo aluno inserido com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(null, " Operação não concluida!");
-            }
-        }
-
-        servicos.selecionaTodosAlunos(conect);
-        aluno = servicos.primeiroRegistroRetornado();
-
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        Aluno novoAluno = new Aluno();
+        
+        novoAluno.setIdAluno(Integer.parseInt(jt_Codigo.getText()));
+        novoAluno.setNome(jt_Nome.getText());
+        novoAluno.setSobreNome(jt_Sobrenome.getText());
+        novoAluno.setCidade(Integer.parseInt(jt_CodCidoade.getText()));
+        
+        Servicos alunoSRV = new Servicos();
+        alunoSRV.salvarAluno(novoAluno, conect);
+        preencheListadeAlunos(conect);
+        preecherPrimeiroAluno();
 
     }//GEN-LAST:event_jb_SalvarActionPerformed
 
     private void jb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ExcluirActionPerformed
 
-        int retorno = servicos.deletar(Integer.parseInt(jt_Codigo.getText()), conect);
+        int retorno = servicos.deletar(Integer.parseInt(jt_Codigo.getText()), conect, alunoDao);
 
         if (retorno != 0) {
             JOptionPane.showMessageDialog(null, " Deleção concluida com sucesso!");
-
-            servicos.selecionaTodosAlunos(conect);
-            aluno = servicos.primeiroRegistroRetornado();
-
-            jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-            jt_Nome.setText(aluno.getNome());
-            jt_Sobrenome.setText(aluno.getSobreNome());
-            jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+            preecherPrimeiroAluno();
         } else {
             JOptionPane.showMessageDialog(null, " A operação não foi concluida!");
         }
@@ -314,45 +275,21 @@ public class CadAluno extends javax.swing.JDialog {
     }//GEN-LAST:event_jb_PesquizarActionPerformed
 
     private void jb_PrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_PrimeiroActionPerformed
-
-        aluno = servicos.primeiroRegistroRetornado();
-
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        preecherPrimeiroAluno();
 
     }//GEN-LAST:event_jb_PrimeiroActionPerformed
 
     private void jb_AnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_AnteriorActionPerformed
-
-        aluno = servicos.registroAnteriorRetornado();
-
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        retornarAluno();
 
     }//GEN-LAST:event_jb_AnteriorActionPerformed
 
     private void jb_ProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ProximoActionPerformed
-
-        aluno = servicos.proximoRegistroRetornado();
-
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        avancarAluno();
     }//GEN-LAST:event_jb_ProximoActionPerformed
 
     private void jb_UltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_UltimoActionPerformed
-
-        aluno = servicos.ultimoRegistroRetornado();
-
-        jt_Codigo.setText(String.valueOf(aluno.getIdAluno()));
-        jt_Nome.setText(aluno.getNome());
-        jt_Sobrenome.setText(aluno.getSobreNome());
-        jt_CodCidoade.setText(String.valueOf(aluno.getCidade()));
+        preecherUltimoAluno();
 
     }//GEN-LAST:event_jb_UltimoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -376,5 +313,51 @@ public class CadAluno extends javax.swing.JDialog {
 
     private void iniciarBD() {
         new Conexao();
+    }
+
+    private void preecherPrimeiroAluno() {
+        ultimaPosicao = 0;
+        preencherCampos();
+    }
+
+    private void preecherUltimoAluno() {
+
+        ultimaPosicao = listaAlunosRetornada.size() - 1;
+        preencherCampos();
+    }
+
+    private void avancarAluno() {
+
+
+
+        if (ultimaPosicao < listaAlunosRetornada.size() - 1) {
+            ultimaPosicao = ultimaPosicao + 1;
+            preencherCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ultimo registro!");
+        }
+
+    }
+
+    private void retornarAluno() {
+        if (ultimaPosicao > 0) {
+            ultimaPosicao = ultimaPosicao - 1;
+            preencherCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Primeiro registro!");
+        }
+    }
+
+    private void preencherCampos() {
+        Aluno alunoRetornado;
+        alunoRetornado = listaAlunosRetornada.get(ultimaPosicao);
+        jt_Codigo.setText(String.valueOf(alunoRetornado.getIdAluno()));
+        jt_Nome.setText(alunoRetornado.getNome());
+        jt_Sobrenome.setText(alunoRetornado.getSobreNome());
+        jt_CodCidoade.setText(String.valueOf(alunoRetornado.getCidade()));
+    }
+
+    private void preencheListadeAlunos(Conexao cnt) {
+        listaAlunosRetornada = servicos.selecionaTodosAlunos(cnt);
     }
 }

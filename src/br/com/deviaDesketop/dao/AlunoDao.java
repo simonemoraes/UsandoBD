@@ -16,8 +16,9 @@ public class AlunoDao {
     ResultSet rs;
 
 
-    public List<Aluno> listarAlunos(Conexao con) {
-
+    public List<Aluno> listarAlunos ( Conexao con ) {
+        
+        
         String sql = "select * from aluno";
         PreparedStatement ps = (PreparedStatement) con.getPreparedStatement(sql);
 
@@ -27,14 +28,14 @@ public class AlunoDao {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Aluno alunoRetornado = new Aluno();
+                Aluno aluno = new Aluno();
+                
+                aluno.setIdAluno(rs.getInt("id"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setSobreNome(rs.getString("sobreNome"));
+                aluno.setCidade(rs.getInt("codCidade"));
 
-                alunoRetornado.setIdAluno(rs.getInt("id"));
-                alunoRetornado.setNome(rs.getString("nome"));
-                alunoRetornado.setSobreNome(rs.getString("sobreNome"));
-                alunoRetornado.setCidade(rs.getInt("codCidade"));
-
-                listaAluno.add(alunoRetornado);
+                listaAluno.add(aluno);
             }
 
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class AlunoDao {
         return listaAluno;
     }
 
-    public Aluno buscaAlunoPorId(int idAluno, Conexao con) {
+    public Aluno buscaAlunoPorId(int idAluno, Conexao con, Aluno aluno ) {
 
         PreparedStatement ps;
         String sql = "select * from aluno where id=?";
@@ -55,7 +56,7 @@ public class AlunoDao {
 
             rs = ps.executeQuery();
 
-            Aluno aluno = new Aluno();
+            //Aluno aluno = new Aluno();
 
             if (rs.next()) {
 
@@ -142,92 +143,6 @@ public class AlunoDao {
         return retorno;
     }
 
-    public Aluno retornaPrimeiroRegistro() {
-
-        try {
-            if (rs != null) {
-
-                rs.first();// First é um comando do java que retorna para o retornaPrimeiroRegistro registro
-
-                Aluno aluno = new Aluno();
-
-                aluno.setIdAluno( rs.getInt( "id" ) );
-                aluno.setNome( rs.getString( "nome" ) );
-                aluno.setSobreNome( rs.getString( "sobreNome" ) );
-                aluno.setCidade( rs.getInt( "CodCidade" ) );
-
-                return aluno;
-            } else {
-                return null;
-            }
-        } catch ( SQLException e ) {
-             JOptionPane.showMessageDialog( null, e.getMessage() ); 
-        }
-        return null;
-    }
-
-    public Aluno retornaRegistroAnterior() {
-
-        try {
-            if (!rs.isFirst()) {
-                rs.previous();
-            }
-
-            Aluno aluno = new Aluno();
-
-            aluno.setIdAluno(rs.getInt("id"));
-            aluno.setNome(rs.getString("nome"));
-            aluno.setSobreNome(rs.getString("sobreNome"));
-            aluno.setCidade(rs.getInt("CodCidade"));
-
-            return aluno;
-
-        } catch (SQLException e) {
-             JOptionPane.showMessageDialog( null, e.getMessage() ); 
-           
-        }
-        return null;
-    }
-
-    public Aluno retornaProximoRegistro() {
-
-        try {
-            if (!rs.isLast()) { rs.next();}
-
-            Aluno aluno = new Aluno();
-
-            aluno.setIdAluno(rs.getInt("id"));
-            aluno.setNome(rs.getString("nome"));
-            aluno.setSobreNome(rs.getString("sobreNome"));
-            aluno.setCidade(rs.getInt("CodCidade"));
-
-            return aluno;
-
-        } catch (SQLException e) {
-             JOptionPane.showMessageDialog( null, e.getMessage() ); 
-        }
-        return null;
-    }
-
-    public Aluno retornaUltimoRegistro() {
-
-        try {
-            rs.last();// First é um comando do java que retorna para o retornaPrimeiroRegistro registro
-
-            Aluno aluno = new Aluno();
-
-            aluno.setIdAluno(rs.getInt("id"));
-            aluno.setNome(rs.getString("nome"));
-            aluno.setSobreNome(rs.getString("sobreNome"));
-            aluno.setCidade(rs.getInt("CodCidade"));
-
-            return aluno;
-
-        } catch (SQLException e) {
-             JOptionPane.showMessageDialog( null, e.getMessage() ); 
-        }
-        return null;
-    }
     
     
     
