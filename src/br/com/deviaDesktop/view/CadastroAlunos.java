@@ -86,7 +86,8 @@ public class CadastroAlunos extends javax.swing.JFrame {
 
     private void jMenuItem_AlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AlunoActionPerformed
         if(conec != null){
-             new CadAluno( this, true, conec).setVisible( true );
+            new CadAluno( this, true, conec).setVisible( true );
+           
         }else{
             JOptionPane.showMessageDialog(null, "Problemas com a conexão com o BD!");
         }
@@ -95,6 +96,7 @@ public class CadastroAlunos extends javax.swing.JFrame {
 
     private void jMenuItem_CidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_CidadeActionPerformed
         new CadCidade( this, true ).setVisible( true );
+        
     }//GEN-LAST:event_jMenuItem_CidadeActionPerformed
 
     public static void main(String args[]) {
